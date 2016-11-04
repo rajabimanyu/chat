@@ -1,0 +1,455 @@
+  <html>
+  <head>
+  <title>smile</title>
+    <script src="js/jquery-2.2.4.min.js"></script>
+
+  <style>
+  #chat{
+  height:450px;
+  float: center;
+
+  }
+  #contentwrap{
+  display:none;
+  }
+  #private{
+    display: none;
+    margin-top: 650px;
+    margin-left: 900px;
+  }
+  #chatwrap{
+    
+  float:left;
+  border: 3px #333 solid;
+  width: 900px;
+  }
+  #user{
+    
+ float: right;
+  display: none;
+  border: 3px #333 solid;
+  width: 150px;
+  height: 100%;
+ 
+  }
+  
+  #head{
+    display: none;
+    margin-top: 0px;
+    margin-left: 93px;
+  }
+  .oldmsg{
+  
+    color:blue;
+  }
+  .primsg{
+    color:green;
+  }
+#buthid{
+  display: none;
+  float: right;
+}
+#my{
+  font-size: 30px;
+  float: right;
+  margin-right: 10px;
+}
+#privat{
+   display: none;
+  float: right;
+}
+#pribut{
+  display: none;
+  float:right;
+}
+#imagefile{
+  float: left;
+}
+#filed{
+  display: none;
+}
+#filedd{
+  display: none;
+}
+#pimg{
+  display: none;
+}
+#pvid{
+  display: none;
+}
+#nickerror{
+  background-color:red;
+  float: center;
+  font-size: 15px;
+
+}
+
+#myImg {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#myImg:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content, #caption { 
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)} 
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+}
+  </style>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    var height = 0;
+$('#chat span').each(function(i, value){
+    height += parseInt($(this).height());
+});
+
+height += '';
+
+$('#chat').animate({scrollTop: height});
+      });
+
+  </script>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+  <script src="/socket.io/socket.io.js"></script>
+
+  </head>
+  <body>
+  <h1 id="my"></h1>
+<p id="pimg">Image:<input type="file" id="filed" />
+<p id="pvid">Video:<input type="file" id="filedd" />
+<a href="/chat">Logout</a>
+  <div id="parent">
+ <div id="user" class="myclass">                         
+
+           </div>
+          
+       <button type="button" id="buthid">click me</button>       <input type="text" id="privat">
+              <button id="pribut">Send</button>
+            </div>
+
+
+<p id="nickerror"></p>
+<div id="nickwrap">
+<div class="container">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Login via site</h3>
+        </div>
+          <div class="panel-body">
+            <form id="setnick" accept-charset="UTF-8" role="form">
+                    <fieldset>
+                <div class="form-group">
+                  <input class="form-control" placeholder="Username" id="nickname" name="email" type="text" required="">
+              </div>
+              <div class="form-group">
+                <input class="form-control" placeholder="Password" id="pass" name="password" type="password" value="" required="">
+              </div>
+              <div class="checkbox">
+                  <label>
+                    <input name="remember" type="checkbox" value="Remember Me"> Remember Me
+                  </label>
+                </div>
+              <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+            </fieldset>
+              </form>
+              </div>
+                      <hr/>
+                    
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div id="contentwrap">
+              <div id="chatwrap" >
+                     <div id="chat" style="overflow:auto;"></div>
+                      <form id="chatform">
+                       <input type="text" id="mesip" class="form-control" style="width:100%" placeholder="type here"></input><br>
+                        <input type="submit" class="btn btn-default" style="margin-left: 118px" value="Send" ></input><br><br>
+                         </form>
+                       </div>
+                              
+
+  </div>
+<div id="private">
+   
+    
+</div>
+  <script>
+
+  jQuery(function($){
+  var socket=io.connect();
+  var $messageform=$('#chatform'); 
+  var $messagebox=$('#mesip');
+  var $chat=$('#chat');
+  var $nickform=$('#setnick');
+  var $nickerror=$('#nickerror');
+  var $nickbox=$('#nickname');
+  var $users=$('#user');
+  $nickform.submit(function(e){
+  e.preventDefault();
+  if($nickbox.val().length>0){
+  socket.emit('newuser',$nickbox.val(),$('#pass').val(),function(data,user){
+      if(data){
+    $('#nickwrap').hide(); 
+    $('#contentwrap').show();
+      $('#user').show();
+      $('#head').show();
+      $('#buthid').show();
+      $('#filed').show();
+      $('#filedd').show();
+      $('#pimg').show();
+      $('#pvid').show();
+
+$('#nickerror').hide();
+
+    }else{
+    $nickerror.html('Username not Exists or Password Not Matched');
+
+    }
+    
+  });
+  }else{
+  alert('please enter some values');
+  }
+  $nickbox.val('');
+  });
+socket.on('user',function(data){
+   $('#my').html('Myself:'+data.obj);
+})
+  socket.on('username',function(data){
+         var html='';
+       
+       for(i=0;i<data.length;i++){
+       html +='<input type="checkbox" name="users" value="'+data[i]+'" >'+ data[i]  +  '<br/>'
+       }
+       $users.html(html);
+       
+  });
+
+  $messageform.submit(function(e){
+  e.preventDefault();
+  socket.emit('send-message',$messagebox.val(),function(data){
+    $chat.append('<span class="error">'+data+' </span><br/>');
+
+  });
+  $messagebox.val('');
+  });
+
+
+socket.on('user image', image);
+function image (from, base64Image) {
+    $('#chat').append('<img src="'+base64Image +'" style="height:100px;width:100px;"/>');
+}
+
+$('#imagefileddd').on('change', function(e){
+   
+    var file = e.originalEvent.target.files[0],
+        reader = new FileReader();
+    reader.onload = function(evt){
+     
+        socket.emit('user image', evt.target.result);
+    };
+    reader.readAsDataURL(file);  
+});
+
+
+
+  socket.on('loadold',function(rows){
+
+    for(i=rows.length-1;i>=0;i--){
+    $chat.append('<span class="oldmsg">'+rows[i].nam+': </b>'+rows[i].msg+'<p style="font-size:10px;">'+rows[i].tim+'</p></span><br/>');
+  }
+  })
+  
+
+
+
+
+var dt = new Date();
+
+  socket.on('private',function(data,callback){
+     $chat.append('<span class="primsg"><b>'+data.nick+':</b>'+data.msg+'</span><br/>');
+   });
+  
+  socket.on('new-message',function(data,callback){
+   $chat.append('<span class="msg"><b>'+data.nick+ ': </b>'+data.msg+'<p>'+dt+'</p> </span><br/>');
+   });
+  function dispmsg(data){
+    $chat.append('<span class="msg"><b>'+data.nick+ ': </b>'+data.msg+ ' </span><br/>');
+
+  }
+socket.on('chimg',function(data){
+   $('#chat').append('<p>'+data.nam+':</p><img id="myimg" src="'+data.dat+'" style="height:400px;width:250px;" />');
+})
+socket.on('chvid',function(data){
+   $('#chat').append('<p>'+data.nam+':</p><video width="400" controls><source src="'+data.dat+'" type="video/mp4"></video>');
+})
+  socket.on('whisper',function(data){
+     $chat.append('<span class="whisper"><b>'+data.nick+':</b>'+data.msg+ '<span><br/>');
+
+  });
+    $("#buthid").click(function(){
+        var user=[];
+          $.each($("input[name='users']:checked"),function(){
+               user.push($(this).val());
+          })
+          if (user==0) {
+               alert("please check");
+               return false;
+          }else{
+          $('#privat').show();
+          $('#pribut').show();
+               alert("My favourite sports are: " + user.join(", ")); 
+          }
+          $('#pribut').click(function(e){
+               e.preventDefault();
+               if (user!=0) {
+               socket.emit('private-message',user,$('#privat').val());
+               }
+               for (var i = 0; i < user.length; i++) {
+                 user.pop();
+               }
+          })
+          $('#privat').val('');
+   })
+ function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                socket.emit('newimg',{obj:e.target.result});
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#filed").change(function(){
+        readURL(this);
+    });
+
+
+ function readURLL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                socket.emit('newvid',{obj:e.target.result});
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#filedd").change(function(){
+        readURLL(this);
+    });
+
+})
+
+
+ 
+  var time=new Date();
+   $(document).ready(function(){ 
+        $("h1").click(function(){
+        alert("hi abimanyu");
+        });
+           }); 
+
+  </script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#check').change(function(){
+      alert('works');
+    })
+  })
+$(document).ready(function(){
+  $('#myimg').click(function() {
+    var URL = $.myURL("index", $(this).attr("href"));
+    window.open(URL,'_blank','',''); 
+})
+  })
+</script>
+
+  </body>
+  </html>

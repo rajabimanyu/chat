@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>      
+    <script src="js/jquery-2.2.4.min.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/emadd.css">
+    <link rel="stylesheet" type="text/css" href="css/success.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<script type="text/javascript">
+    $(document).ready(function(){
+             var socket=io.connect();
+               $('#butt').click(function(e){
+            e.preventDefault();
+            $('#add').append('<div class="container"><div class="row" style="margin-top: 5%"><div class="col-md-5"><div class="form-group" style="width:350px;height:40"><div class="icon-addon addon-lg" style="margin-left:35px;"><input type="email" placeholder="Email" class="form-control" id="task" name="invem[]" required=""><br><label for="email"  rel="tooltip" title="email"></label></div></div></div></div></div>');
+        })
+        $('#invit').click(function(e){
+            e.preventDefault();
+            var values = $("input[id='task']")
+              .map(function(){return $(this).val();}).get();
+            alert(values);
+       
+        })
+        $('#butt').click(function(){
+            $('#sub').show();
+        })
+    })
+
+jQuery(function($){
+     var socket=io.connect();
+ $('#unam').on('blur', function(e) {
+      alert("letter entered");
+      socket.emit('cuname',$('#unam').val(),function(data){
+     if(!data){
+       
+     }else{ alert('Invalid Username');
+        e.preventDefault();
+     }
+      })
+      });
+})
+</script>
+
+<style type="text/css">
+    .ds-btn li{ list-style:none; float:left; padding:10px; }
+.ds-btn li a span small{width:100%; display:inline-block; text-align:left;}
+#sub{
+    display: none;
+}
+</style>
+</head>
+<body>
+<link href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css" rel="stylesheet" media="screen">    
+<div class="container" style="margin-top:15px;">
+<div class="process">
+    <div class="process-row">
+        <div class="process-step">
+            <button type="button" class="btn btn-success btn-circle" disabled="disabled"><i class="fa fa-envelope-o fa-3x"></i></button>
+            <p>verify work email</p>
+        </div>
+        <div class="process-step">
+            <button type="button" class="btn btn-success btn-circle" disabled="disabled"><i class="fa fa-linkedin fa-3x"></i></button>
+            <p>verify linkedin</p>
+        </div>
+        <div class="process-step">
+            <button type="button" class="btn btn-success btn-circle" disabled="disabled"><i class="fa fa-user fa-3x"></i></button>
+            <p>complete profile in 10s</p>
+        </div> 
+         <div class="process-step">
+            <button type="button" class="btn btn-success btn-circle" disabled="disabled"><i class="fa fa-flag-checkered fa-3x"></i></button>
+            <p><strong>Donezo!</strong></p>
+        </div> 
+    </div>
+</div>
+
+
+
+
+<div class="container">
+    <div class="row">
+    
+    <ul class="ds-btn" style="height:140;width:40px;">  
+        <li>
+               <button  class="btn btn-lg btn-info" href="" id="butt" style="background-color:#5cb85c;height:30px;width:110px;">
+         <i ></i><h style="font-size:18px;padding-bottom:10px;">Add<br></h></button> 
+        </li>
+    </ul>
+    
+    </div>
+</div>
+
+
+
+<form action="invit" method="post">
+<input type="text" placeholder="Username" class="form-control" id="unam" name="uname" required="">
+<div id="add">
+</div>
+
+<div id="sub" class="container">
+    <div class="row">
+    
+    <ul class="ds-btn">  
+        <li>
+               <input type="submit" id="invit" class="btn btn-lg btn-info" href="" id="butt" style="background-color:#5cb85c;">
+         <i ></i><span><br><small></small></span></input> 
+        </li>
+    </ul>
+    
+    </div>
+</div>
+
+
+</form>
+
+</body>
+</html>
+
+
